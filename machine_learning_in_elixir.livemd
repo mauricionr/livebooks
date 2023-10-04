@@ -1,0 +1,510 @@
+<!-- livebook:{"persist_outputs":true} -->
+
+# ML with Elixir
+
+## Make Machines That learn
+
+```elixir
+Mix.install([
+  {:axon, "~> 0.5"},
+  {:nx, "~> 0.5"},
+  {:explorer, "~> 0.5"},
+  {:kino, "~> 0.8"},
+  {:exla, "~> 0.5"},
+  {:benchee, github: "bencheeorg/benchee", override: true}
+])
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+* Getting benchee (https://github.com/bencheeorg/benchee.git)
+remote: Enumerating objects: 7585, done.        
+remote: Counting objects: 100% (835/835), done.        
+remote: Compressing objects: 100% (366/366), done.        
+remote: Total 7585 (delta 445), reused 706 (delta 413), pack-reused 6750        
+origin/HEAD set to main
+Resolving Hex dependencies...
+Resolution completed in 0.677s
+New:
+  aws_signature 0.3.1
+  axon 0.6.0
+  castore 1.0.4
+  complex 0.5.0
+  deep_merge 1.0.0
+  elixir_make 0.7.7
+  exla 0.6.1
+  explorer 0.7.1
+  fss 0.1.1
+  kino 0.10.0
+  nx 0.6.2
+  polaris 0.1.0
+  rustler_precompiled 0.7.0
+  statistex 1.0.0
+  table 0.1.2
+  table_rex 3.1.1
+  telemetry 1.2.1
+  xla 0.5.1
+* Getting axon (Hex package)
+* Getting nx (Hex package)
+* Getting explorer (Hex package)
+* Getting kino (Hex package)
+* Getting exla (Hex package)
+* Getting deep_merge (Hex package)
+* Getting statistex (Hex package)
+* Getting elixir_make (Hex package)
+* Getting telemetry (Hex package)
+* Getting xla (Hex package)
+* Getting table (Hex package)
+* Getting aws_signature (Hex package)
+* Getting castore (Hex package)
+* Getting fss (Hex package)
+* Getting rustler_precompiled (Hex package)
+* Getting table_rex (Hex package)
+* Getting complex (Hex package)
+* Getting polaris (Hex package)
+==> deep_merge
+Compiling 2 files (.ex)
+Generated deep_merge app
+===> Analyzing applications...
+===> Compiling aws_signature
+==> table
+Compiling 5 files (.ex)
+Generated table app
+===> Analyzing applications...
+===> Compiling telemetry
+==> statistex
+Compiling 3 files (.ex)
+Generated statistex app
+==> fss
+Compiling 4 files (.ex)
+Generated fss app
+==> complex
+Compiling 2 files (.ex)
+Generated complex app
+==> nx
+Compiling 32 files (.ex)
+Generated nx app
+==> kino
+Compiling 41 files (.ex)
+Generated kino app
+==> polaris
+Compiling 5 files (.ex)
+Generated polaris app
+==> table_rex
+Compiling 7 files (.ex)
+Generated table_rex app
+==> axon
+Compiling 23 files (.ex)
+Generated axon app
+==> benchee
+Compiling 44 files (.ex)
+Generated benchee app
+==> castore
+Compiling 1 file (.ex)
+Generated castore app
+==> elixir_make
+Compiling 6 files (.ex)
+Generated elixir_make app
+==> xla
+Compiling 2 files (.ex)
+Generated xla app
+
+21:36:53.609 [info] Found a matching archive (xla_extension-aarch64-darwin-cpu.tar.gz), going to download it
+
+21:37:07.675 [info] Successfully downloaded the XLA archive
+==> exla
+Unpacking /Users/mauricio.reis/Library/Caches/xla/0.5.1/cache/download/xla_extension-aarch64-darwin-cpu.tar.gz into /Users/mauricio.reis/Library/Caches/mix/installs/elixir-1.15.2-erts-14.0.2/aa46092b66f415e30ca983c53fca7251/deps/exla/cache
+c++ -fPIC -I/Applications/Livebook.app/Contents/Resources/rel/vendor/otp/erts-14.0.2/include -Icache/xla_extension/include -O3 -Wall -Wno-sign-compare -Wno-unused-parameter -Wno-missing-field-initializers -Wno-comment -shared -std=c++17 -w -DLLVM_VERSION_STRING= c_src/exla/exla.cc c_src/exla/exla_nif_util.cc c_src/exla/exla_client.cc -o cache/libexla.so -Lcache/xla_extension/lib -lxla_extension -flat_namespace -undefined suppress
+ld: warning: -undefined suppress is deprecated
+install_name_tool -change bazel-out/darwin_arm64-opt/bin/xla/extension/libxla_extension.so @loader_path/xla_extension/lib/libxla_extension.so -change bazel-out/darwin-opt/bin/xla/extension/libxla_extension.so @loader_path/xla_extension/lib/libxla_extension.so cache/libexla.so
+Caching libexla.so at /Users/mauricio.reis/Library/Caches/xla/exla/elixir-1.15.2-erts-14.0.2-xla-0.5.1-exla-0.6.1-gk4j7emylwfjp3wmt5mm27pxpi/libexla.so
+Compiling 21 files (.ex)
+Generated exla app
+==> rustler_precompiled
+Compiling 4 files (.ex)
+Generated rustler_precompiled app
+==> explorer
+Compiling 24 files (.ex)
+
+21:37:31.359 [debug] Copying NIF from cache and extracting to /Users/mauricio.reis/Library/Caches/mix/installs/elixir-1.15.2-erts-14.0.2/aa46092b66f415e30ca983c53fca7251/_build/dev/lib/explorer/priv/native/libexplorer-v0.7.1-nif-2.15-aarch64-apple-darwin.so
+Generated explorer app
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+:ok
+```
+
+```elixir
+require Explorer.DataFrame, as: DF
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+Explorer.DataFrame
+```
+
+```elixir
+iris = Explorer.Datasets.iris()
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+#Explorer.DataFrame<
+  Polars[150 x 5]
+  sepal_length float [5.1, 4.9, 4.7, 4.6, 5.0, ...]
+  sepal_width float [3.5, 3.0, 3.2, 3.1, 3.6, ...]
+  petal_length float [1.4, 1.4, 1.3, 1.5, 1.4, ...]
+  petal_width float [0.2, 0.2, 0.2, 0.2, 0.2, ...]
+  species string ["Iris-setosa", "Iris-setosa", "Iris-setosa", "Iris-setosa", "Iris-setosa", ...]
+>
+```
+
+```elixir
+cols = ~w(sepal_width sepal_length petal_length petal_width)
+
+normalized_iris =
+  DF.mutate(
+    iris,
+    for col <- across(^cols) do
+      {col.name, (col - mean(col)) / variance(col)}
+    end
+  )
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+#Explorer.DataFrame<
+  Polars[150 x 5]
+  sepal_length float [-1.0840606189132314, -1.3757361217598396, -1.6674116246064494,
+   -1.8132493760297548, -1.2298983703365356, ...]
+  sepal_width float [2.372289612531505, -0.28722789030650403, 0.7765791108287006,
+   0.24467561026109824, 2.904193113099107, ...]
+  petal_length float [-0.7576391687443842, -0.7576391687443842, -0.7897606710936372,
+   -0.725517666395131, -0.7576391687443842, ...]
+  petal_width float [-1.7147014356654704, -1.7147014356654704, -1.7147014356654704,
+   -1.7147014356654704, -1.7147014356654704, ...]
+  species string ["Iris-setosa", "Iris-setosa", "Iris-setosa", "Iris-setosa", "Iris-setosa", ...]
+>
+```
+
+```elixir
+normalized_iris =
+  DF.mutate(
+    normalized_iris,
+    species: Explorer.Series.cast(species, :category)
+  )
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+#Explorer.DataFrame<
+  Polars[150 x 5]
+  sepal_length float [-1.0840606189132314, -1.3757361217598396, -1.6674116246064494,
+   -1.8132493760297548, -1.2298983703365356, ...]
+  sepal_width float [2.372289612531505, -0.28722789030650403, 0.7765791108287006,
+   0.24467561026109824, 2.904193113099107, ...]
+  petal_length float [-0.7576391687443842, -0.7576391687443842, -0.7897606710936372,
+   -0.725517666395131, -0.7576391687443842, ...]
+  petal_width float [-1.7147014356654704, -1.7147014356654704, -1.7147014356654704,
+   -1.7147014356654704, -1.7147014356654704, ...]
+  species category ["Iris-setosa", "Iris-setosa", "Iris-setosa", "Iris-setosa", "Iris-setosa", ...]
+>
+```
+
+```elixir
+shuffled_normalized_iris = DF.shuffle(normalized_iris)
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+#Explorer.DataFrame<
+  Polars[150 x 5]
+  sepal_length float [1.2493434038596445, 0.3743168953198156, -1.0840606189132314,
+   1.2493434038596445, 1.8326944095528626, ...]
+  sepal_width float [-0.28722789030650403, -1.3510348914417087, 1.3084826113963004,
+   1.3084826113963004, -0.28722789030650403, ...]
+  petal_length float [0.4629779205272352, 0.07751989233619747, -0.6612746616966249,
+   0.6235854322735009, 0.6878284369720072, ...]
+  petal_width float [1.8909791533507048, 0.17398839667633598, -1.1996042086631595,
+   1.5475810020158314, 1.5475810020158314, ...]
+  species category ["Iris-virginica", "Iris-versicolor", "Iris-setosa", "Iris-virginica",
+   "Iris-virginica", ...]
+>
+```
+
+```elixir
+train_df = DF.slice(shuffled_normalized_iris, 0..119)
+test_df = DF.slice(shuffled_normalized_iris, 120..149)
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+#Explorer.DataFrame<
+  Polars[30 x 5]
+  sepal_length float [-0.9382228674899259, -0.6465473646433162, -1.0840606189132314,
+   0.22847914389651144, -1.2298983703365356, ...]
+  sepal_width float [2.372289612531505, 4.499903614801912, 2.372289612531505, -4.5424558948473175,
+   2.904193113099107, ...]
+  petal_length float [-0.725517666395131, -0.6612746616966249, -0.7576391687443842,
+   0.3987349158287289, -0.7576391687443842, ...]
+  petal_width float [-1.7147014356654704, -1.3713032843305963, -1.5430023599980331,
+   0.5173865480112098, -1.7147014356654704, ...]
+  species category ["Iris-setosa", "Iris-setosa", "Iris-setosa", "Iris-virginica", "Iris-setosa",
+   ...]
+>
+```
+
+```elixir
+feature_columns = ["sepal_length", "sepal_width", "petal_length", "petal_width"]
+x_train = Nx.stack(train_df[feature_columns], axis: -1)
+y_train = train_df["species"] |> Nx.stack(axis: -1) |> Nx.equal(Nx.iota({1, 3}, axis: -1))
+x_test = Nx.stack(test_df[feature_columns], axis: -1)
+y_test = test_df["species"] |> Nx.stack(axis: -1) |> Nx.equal(Nx.iota({1, 3}, axis: -1))
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+#Nx.Tensor<
+  u8[30][3]
+  [
+    [1, 0, 0],
+    [1, 0, 0],
+    [1, 0, 0],
+    [0, 0, 1],
+    [1, 0, 0],
+    [1, 0, 0],
+    [1, 0, 0],
+    [0, 0, 1],
+    [0, 1, 0],
+    [0, 1, 0],
+    [0, 1, 0],
+    [1, 0, 0],
+    [0, 0, 1],
+    [1, 0, 0],
+    [0, 1, 0],
+    [0, 1, 0],
+    [0, 0, ...],
+    ...
+  ]
+>
+```
+
+```elixir
+model =
+  Axon.input("iris_features", shape: {nil, 4}) |> Axon.dense(3, activation: :softmax)
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+#Axon<
+  inputs: %{"iris_features" => {nil, 4}}
+  outputs: "softmax_0"
+  nodes: 3
+>
+```
+
+```elixir
+Axon.Display.as_graph(model, Nx.template({1, 4}, :f32))
+```
+
+<!-- livebook:{"output":true} -->
+
+```mermaid
+graph TD;
+10[/"iris_features (:input) {1, 4}"/];
+11["dense_0 (:dense) {1, 3}"];
+12["softmax_0 (:softmax) {1, 3}"];
+11 --> 12;
+10 --> 11;
+```
+
+```elixir
+data_stream = Stream.repeatedly(fn -> {x_train, y_train} end)
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+#Function<51.53678557/2 in Stream.repeatedly/1>
+```
+
+```elixir
+trained_model_state =
+  model
+  |> Axon.Loop.trainer(:categorical_cross_entropy, :sgd)
+  |> Axon.Loop.metric(:accuracy)
+  |> Axon.Loop.run(data_stream, %{}, iterations: 500, epochs: 10)
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+Epoch: 0, Batch: 450, accuracy: 0.7460837 loss: 0.7370664
+Epoch: 1, Batch: 450, accuracy: 0.8941026 loss: 0.5323826
+Epoch: 2, Batch: 450, accuracy: 0.9128583 loss: 0.4500546
+Epoch: 3, Batch: 450, accuracy: 0.9351081 loss: 0.4010248
+Epoch: 4, Batch: 450, accuracy: 0.9416718 loss: 0.3668963
+Epoch: 5, Batch: 450, accuracy: 0.9500036 loss: 0.3411128
+Epoch: 6, Batch: 450, accuracy: 0.9542524 loss: 0.3206303
+Epoch: 7, Batch: 450, accuracy: 0.9666680 loss: 0.3037958
+Epoch: 8, Batch: 450, accuracy: 0.9666680 loss: 0.2896138
+Epoch: 9, Batch: 450, accuracy: 0.9666680 loss: 0.2774396
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+%{
+  "dense_0" => %{
+    "bias" => #Nx.Tensor<
+      f32[3]
+      [-0.39121106266975403, 1.579376220703125, -1.1881664991378784]
+    >,
+    "kernel" => #Nx.Tensor<
+      f32[4][3]
+      [
+        [-1.3395873308181763, 0.6202232837677002, 0.8924155831336975],
+        [0.4251044988632202, -0.5137128233909607, -0.5283079147338867],
+        [-0.648832380771637, 0.35919371247291565, 0.21394731104373932],
+        [-1.6400235891342163, -0.5687859654426575, 2.796006917953491]
+      ]
+    >
+  }
+}
+```
+
+```elixir
+data = [{x_test, y_test}]
+
+model
+|> Axon.Loop.evaluator()
+|> Axon.Loop.metric(:accuracy)
+|> Axon.Loop.run(data, trained_model_state)
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+Batch: 0, accuracy: 0.9000000
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+%{
+  0 => %{
+    "accuracy" => #Nx.Tensor<
+      f32
+      0.8999999761581421
+    >
+  }
+}
+```
+
+## Get comfortable with Nx
+
+```elixir
+Nx.tensor([1, 2, 3])
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+#Nx.Tensor<
+  s64[3]
+  [1, 2, 3]
+>
+```
+
+```elixir
+a = Nx.tensor([[1, 2, 3], [4, 5, 6]])
+b = Nx.tensor(1.0)
+c = Nx.tensor([[[[[[1.0, 2]]]]]])
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+#Nx.Tensor<
+  f32[1][1][1][1][1][2]
+  [
+    [
+      [
+        [
+          [
+            [1.0, 2.0]
+          ]
+        ]
+      ]
+    ]
+  ]
+>
+```
+
+```elixir
+c
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+#Nx.Tensor<
+  f32[1][1][1][1][1][2]
+  [
+    [
+      [
+        [
+          [
+            [1.0, 2.0]
+          ]
+        ]
+      ]
+    ]
+  ]
+>
+```
+
+```elixir
+a = Nx.tensor([1, 2, 3])
+b = Nx.tensor([1.0, 2.0, 3.0])
+dbg(a)
+dbg(b)
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+#Nx.Tensor<
+  s64[3]
+  [1, 2, 3]
+>
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+#Nx.Tensor<
+  f32[3]
+  [1.0, 2.0, 3.0]
+>
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+#Nx.Tensor<
+  f32[3]
+  [1.0, 2.0, 3.0]
+>
+```
