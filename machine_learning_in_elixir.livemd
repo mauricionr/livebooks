@@ -1,8 +1,6 @@
 <!-- livebook:{"persist_outputs":true} -->
 
-# ML with Elixir
-
-## Make Machines That learn
+# ML with Elixir Chapter 1 and 2
 
 ```elixir
 Mix.install([
@@ -18,124 +16,10 @@ Mix.install([
 <!-- livebook:{"output":true} -->
 
 ```
-* Getting benchee (https://github.com/bencheeorg/benchee.git)
-remote: Enumerating objects: 7585, done.        
-remote: Counting objects: 100% (835/835), done.        
-remote: Compressing objects: 100% (366/366), done.        
-remote: Total 7585 (delta 445), reused 706 (delta 413), pack-reused 6750        
-origin/HEAD set to main
-Resolving Hex dependencies...
-Resolution completed in 0.677s
-New:
-  aws_signature 0.3.1
-  axon 0.6.0
-  castore 1.0.4
-  complex 0.5.0
-  deep_merge 1.0.0
-  elixir_make 0.7.7
-  exla 0.6.1
-  explorer 0.7.1
-  fss 0.1.1
-  kino 0.10.0
-  nx 0.6.2
-  polaris 0.1.0
-  rustler_precompiled 0.7.0
-  statistex 1.0.0
-  table 0.1.2
-  table_rex 3.1.1
-  telemetry 1.2.1
-  xla 0.5.1
-* Getting axon (Hex package)
-* Getting nx (Hex package)
-* Getting explorer (Hex package)
-* Getting kino (Hex package)
-* Getting exla (Hex package)
-* Getting deep_merge (Hex package)
-* Getting statistex (Hex package)
-* Getting elixir_make (Hex package)
-* Getting telemetry (Hex package)
-* Getting xla (Hex package)
-* Getting table (Hex package)
-* Getting aws_signature (Hex package)
-* Getting castore (Hex package)
-* Getting fss (Hex package)
-* Getting rustler_precompiled (Hex package)
-* Getting table_rex (Hex package)
-* Getting complex (Hex package)
-* Getting polaris (Hex package)
-==> deep_merge
-Compiling 2 files (.ex)
-Generated deep_merge app
-===> Analyzing applications...
-===> Compiling aws_signature
-==> table
-Compiling 5 files (.ex)
-Generated table app
-===> Analyzing applications...
-===> Compiling telemetry
-==> statistex
-Compiling 3 files (.ex)
-Generated statistex app
-==> fss
-Compiling 4 files (.ex)
-Generated fss app
-==> complex
-Compiling 2 files (.ex)
-Generated complex app
-==> nx
-Compiling 32 files (.ex)
-Generated nx app
-==> kino
-Compiling 41 files (.ex)
-Generated kino app
-==> polaris
-Compiling 5 files (.ex)
-Generated polaris app
-==> table_rex
-Compiling 7 files (.ex)
-Generated table_rex app
-==> axon
-Compiling 23 files (.ex)
-Generated axon app
-==> benchee
-Compiling 44 files (.ex)
-Generated benchee app
-==> castore
-Compiling 1 file (.ex)
-Generated castore app
-==> elixir_make
-Compiling 6 files (.ex)
-Generated elixir_make app
-==> xla
-Compiling 2 files (.ex)
-Generated xla app
-
-21:36:53.609 [info] Found a matching archive (xla_extension-aarch64-darwin-cpu.tar.gz), going to download it
-
-21:37:07.675 [info] Successfully downloaded the XLA archive
-==> exla
-Unpacking /Users/mauricio.reis/Library/Caches/xla/0.5.1/cache/download/xla_extension-aarch64-darwin-cpu.tar.gz into /Users/mauricio.reis/Library/Caches/mix/installs/elixir-1.15.2-erts-14.0.2/aa46092b66f415e30ca983c53fca7251/deps/exla/cache
-c++ -fPIC -I/Applications/Livebook.app/Contents/Resources/rel/vendor/otp/erts-14.0.2/include -Icache/xla_extension/include -O3 -Wall -Wno-sign-compare -Wno-unused-parameter -Wno-missing-field-initializers -Wno-comment -shared -std=c++17 -w -DLLVM_VERSION_STRING= c_src/exla/exla.cc c_src/exla/exla_nif_util.cc c_src/exla/exla_client.cc -o cache/libexla.so -Lcache/xla_extension/lib -lxla_extension -flat_namespace -undefined suppress
-ld: warning: -undefined suppress is deprecated
-install_name_tool -change bazel-out/darwin_arm64-opt/bin/xla/extension/libxla_extension.so @loader_path/xla_extension/lib/libxla_extension.so -change bazel-out/darwin-opt/bin/xla/extension/libxla_extension.so @loader_path/xla_extension/lib/libxla_extension.so cache/libexla.so
-Caching libexla.so at /Users/mauricio.reis/Library/Caches/xla/exla/elixir-1.15.2-erts-14.0.2-xla-0.5.1-exla-0.6.1-gk4j7emylwfjp3wmt5mm27pxpi/libexla.so
-Compiling 21 files (.ex)
-Generated exla app
-==> rustler_precompiled
-Compiling 4 files (.ex)
-Generated rustler_precompiled app
-==> explorer
-Compiling 24 files (.ex)
-
-21:37:31.359 [debug] Copying NIF from cache and extracting to /Users/mauricio.reis/Library/Caches/mix/installs/elixir-1.15.2-erts-14.0.2/aa46092b66f415e30ca983c53fca7251/_build/dev/lib/explorer/priv/native/libexplorer-v0.7.1-nif-2.15-aarch64-apple-darwin.so
-Generated explorer app
-```
-
-<!-- livebook:{"output":true} -->
-
-```
 :ok
 ```
+
+## Make Machines That learn
 
 ```elixir
 require Explorer.DataFrame, as: DF
@@ -227,15 +111,15 @@ shuffled_normalized_iris = DF.shuffle(normalized_iris)
 ```
 #Explorer.DataFrame<
   Polars[150 x 5]
-  sepal_length float [1.2493434038596445, 0.3743168953198156, -1.0840606189132314,
-   1.2493434038596445, 1.8326944095528626, ...]
-  sepal_width float [-0.28722789030650403, -1.3510348914417087, 1.3084826113963004,
-   1.3084826113963004, -0.28722789030650403, ...]
-  petal_length float [0.4629779205272352, 0.07751989233619747, -0.6612746616966249,
-   0.6235854322735009, 0.6878284369720072, ...]
-  petal_width float [1.8909791533507048, 0.17398839667633598, -1.1996042086631595,
-   1.5475810020158314, 1.5475810020158314, ...]
-  species category ["Iris-virginica", "Iris-versicolor", "Iris-setosa", "Iris-virginica",
+  sepal_length float [-0.5007096132200121, -0.2090341103734024, 0.22847914389651144,
+   0.5201546467431211, 2.7077209180926913, ...]
+  sepal_width float [-2.9467453931445133, -0.28722789030650403, 1.8403861119639027,
+   -0.8191313908741064, -2.414841892576911, ...]
+  petal_length float [0.07751989233619747, 0.1417628970347038, 0.23812740408246316,
+   0.17388439938395683, 1.0090434604645386, ...]
+  petal_width float [0.17398839667633598, 0.0022893210088989068, 0.6890856236786468,
+   0.17398839667633598, 1.8909791533507048, ...]
+  species category ["Iris-versicolor", "Iris-versicolor", "Iris-versicolor", "Iris-versicolor",
    "Iris-virginica", ...]
 >
 ```
@@ -250,16 +134,16 @@ test_df = DF.slice(shuffled_normalized_iris, 120..149)
 ```
 #Explorer.DataFrame<
   Polars[30 x 5]
-  sepal_length float [-0.9382228674899259, -0.6465473646433162, -1.0840606189132314,
-   0.22847914389651144, -1.2298983703365356, ...]
-  sepal_width float [2.372289612531505, 4.499903614801912, 2.372289612531505, -4.5424558948473175,
-   2.904193113099107, ...]
-  petal_length float [-0.725517666395131, -0.6612746616966249, -0.7576391687443842,
-   0.3987349158287289, -0.7576391687443842, ...]
-  petal_width float [-1.7147014356654704, -1.3713032843305963, -1.5430023599980331,
+  sepal_length float [-1.0840606189132314, -0.06319635895009822, -1.2298983703365356,
+   -0.6465473646433162, -2.1049248788763633, ...]
+  sepal_width float [1.8403861119639027, -1.8829383920093086, 1.8403861119639027,
+   -0.28722789030650403, -0.8191313908741064, ...]
+  petal_length float [-0.725517666395131, 0.04539838998694429, -0.725517666395131,
+   0.23812740408246316, -0.7576391687443842, ...]
+  petal_width float [-1.7147014356654704, 0.0022893210088989068, -1.7147014356654704,
    0.5173865480112098, -1.7147014356654704, ...]
-  species category ["Iris-setosa", "Iris-setosa", "Iris-setosa", "Iris-virginica", "Iris-setosa",
-   ...]
+  species category ["Iris-setosa", "Iris-versicolor", "Iris-setosa", "Iris-versicolor",
+   "Iris-setosa", ...]
 >
 ```
 
@@ -278,22 +162,22 @@ y_test = test_df["species"] |> Nx.stack(axis: -1) |> Nx.equal(Nx.iota({1, 3}, ax
   u8[30][3]
   [
     [1, 0, 0],
+    [0, 1, 0],
     [1, 0, 0],
+    [0, 1, 0],
     [1, 0, 0],
+    [0, 1, 0],
+    [0, 0, 1],
+    [0, 1, 0],
     [0, 0, 1],
     [1, 0, 0],
-    [1, 0, 0],
-    [1, 0, 0],
+    [0, 0, 1],
+    [0, 0, 1],
     [0, 0, 1],
     [0, 1, 0],
-    [0, 1, 0],
-    [0, 1, 0],
-    [1, 0, 0],
     [0, 0, 1],
-    [1, 0, 0],
     [0, 1, 0],
-    [0, 1, 0],
-    [0, 0, ...],
+    [0, 1, ...],
     ...
   ]
 >
@@ -322,11 +206,11 @@ Axon.Display.as_graph(model, Nx.template({1, 4}, :f32))
 
 ```mermaid
 graph TD;
-10[/"iris_features (:input) {1, 4}"/];
-11["dense_0 (:dense) {1, 3}"];
-12["softmax_0 (:softmax) {1, 3}"];
-11 --> 12;
-10 --> 11;
+3[/"iris_features (:input) {1, 4}"/];
+4["dense_0 (:dense) {1, 3}"];
+5["softmax_0 (:softmax) {1, 3}"];
+4 --> 5;
+3 --> 4;
 ```
 
 ```elixir
@@ -350,16 +234,16 @@ trained_model_state =
 <!-- livebook:{"output":true} -->
 
 ```
-Epoch: 0, Batch: 450, accuracy: 0.7460837 loss: 0.7370664
-Epoch: 1, Batch: 450, accuracy: 0.8941026 loss: 0.5323826
-Epoch: 2, Batch: 450, accuracy: 0.9128583 loss: 0.4500546
-Epoch: 3, Batch: 450, accuracy: 0.9351081 loss: 0.4010248
-Epoch: 4, Batch: 450, accuracy: 0.9416718 loss: 0.3668963
-Epoch: 5, Batch: 450, accuracy: 0.9500036 loss: 0.3411128
-Epoch: 6, Batch: 450, accuracy: 0.9542524 loss: 0.3206303
-Epoch: 7, Batch: 450, accuracy: 0.9666680 loss: 0.3037958
-Epoch: 8, Batch: 450, accuracy: 0.9666680 loss: 0.2896138
-Epoch: 9, Batch: 450, accuracy: 0.9666680 loss: 0.2774396
+Epoch: 0, Batch: 450, accuracy: 0.7975069 loss: 0.5346743
+Epoch: 1, Batch: 450, accuracy: 0.8817796 loss: 0.4265262
+Epoch: 2, Batch: 450, accuracy: 0.9094223 loss: 0.3754953
+Epoch: 3, Batch: 450, accuracy: 0.9254755 loss: 0.3421039
+Epoch: 4, Batch: 450, accuracy: 0.9412098 loss: 0.3173910
+Epoch: 5, Batch: 450, accuracy: 0.9500036 loss: 0.2978971
+Epoch: 6, Batch: 450, accuracy: 0.9564328 loss: 0.2819050
+Epoch: 7, Batch: 450, accuracy: 0.9583363 loss: 0.2684285
+Epoch: 8, Batch: 450, accuracy: 0.9583363 loss: 0.2568461
+Epoch: 9, Batch: 450, accuracy: 0.9735075 loss: 0.2467393
 ```
 
 <!-- livebook:{"output":true} -->
@@ -369,15 +253,15 @@ Epoch: 9, Batch: 450, accuracy: 0.9666680 loss: 0.2774396
   "dense_0" => %{
     "bias" => #Nx.Tensor<
       f32[3]
-      [-0.39121106266975403, 1.579376220703125, -1.1881664991378784]
+      [-0.4798009991645813, 1.449930191040039, -0.9701287150382996]
     >,
     "kernel" => #Nx.Tensor<
       f32[4][3]
       [
-        [-1.3395873308181763, 0.6202232837677002, 0.8924155831336975],
-        [0.4251044988632202, -0.5137128233909607, -0.5283079147338867],
-        [-0.648832380771637, 0.35919371247291565, 0.21394731104373932],
-        [-1.6400235891342163, -0.5687859654426575, 2.796006917953491]
+        [-1.862699031829834, 0.20483537018299103, 0.503122866153717],
+        [1.507271647453308, 0.07579445838928223, 0.06820608675479889],
+        [-0.26711902022361755, 0.8181400895118713, 0.6671801805496216],
+        [-1.192967176437378, -0.83183753490448, 2.542182445526123]
       ]
     >
   }
@@ -396,7 +280,7 @@ model
 <!-- livebook:{"output":true} -->
 
 ```
-Batch: 0, accuracy: 0.9000000
+Batch: 0, accuracy: 0.8666667
 ```
 
 <!-- livebook:{"output":true} -->
@@ -406,7 +290,7 @@ Batch: 0, accuracy: 0.9000000
   0 => %{
     "accuracy" => #Nx.Tensor<
       f32
-      0.8999999761581421
+      0.8666666746139526
     >
   }
 }
@@ -507,4 +391,1086 @@ dbg(b)
   f32[3]
   [1.0, 2.0, 3.0]
 >
+```
+
+```elixir
+Nx.tensor(0.0000000000000000000000000000000000000000000001)
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+#Nx.Tensor<
+  f32
+  0.0
+>
+```
+
+```elixir
+Nx.tensor(1.0e-45, type: {:f, 64})
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+#Nx.Tensor<
+  f64
+  1.0e-45
+>
+```
+
+```elixir
+Nx.tensor(128, type: {:s, 8})
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+#Nx.Tensor<
+  s8
+  -128
+>
+```
+
+```elixir
+Nx.tensor([1.0, 2, 3])
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+#Nx.Tensor<
+  f32[3]
+  [1.0, 2.0, 3.0]
+>
+```
+
+```elixir
+a = Nx.tensor([1, 2])
+b = Nx.tensor([[1, 2], [3, 4]])
+c = Nx.tensor([[[1, 2], [3, 4]], [[5, 6], [7, 8]]])
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+#Nx.Tensor<
+  s64[2][2][2]
+  [
+    [
+      [1, 2],
+      [3, 4]
+    ],
+    [
+      [5, 6],
+      [7, 8]
+    ]
+  ]
+>
+```
+
+```elixir
+dbg(a)
+dbg(b)
+dbg(c)
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+#Nx.Tensor<
+  s64[2]
+  [1, 2]
+>
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+#Nx.Tensor<
+  s64[2][2]
+  [
+    [1, 2],
+    [3, 4]
+  ]
+>
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+#Nx.Tensor<
+  s64[2][2][2]
+  [
+    [
+      [1, 2],
+      [3, 4]
+    ],
+    [
+      [5, 6],
+      [7, 8]
+    ]
+  ]
+>
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+#Nx.Tensor<
+  s64[2][2][2]
+  [
+    [
+      [1, 2],
+      [3, 4]
+    ],
+    [
+      [5, 6],
+      [7, 8]
+    ]
+  ]
+>
+```
+
+```elixir
+Nx.tensor([[1, 2, 3], [4, 5, 6]], names: [:x, :y])
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+#Nx.Tensor<
+  s64[x: 2][y: 3]
+  [
+    [1, 2, 3],
+    [4, 5, 6]
+  ]
+>
+```
+
+```elixir
+a = Nx.tensor([[1, 2, 3], [4, 5, 6]])
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+#Nx.Tensor<
+  s64[2][3]
+  [
+    [1, 2, 3],
+    [4, 5, 6]
+  ]
+>
+```
+
+```elixir
+Nx.to_binary(a)
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+<<1, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 5,
+  0, 0, 0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0>>
+```
+
+```elixir
+<<1::64-signed-native, 2::64-signed-native, 3::64-signed-native>> |> Nx.from_binary({:s, 64})
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+#Nx.Tensor<
+  s64[3]
+  [1, 2, 3]
+>
+```
+
+```elixir
+<<1::64-signed-native, 2::64-signed-native, 3::64-signed-native>>
+|> Nx.from_binary({:s, 64})
+|> Nx.reshape({1, 3})
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+#Nx.Tensor<
+  s64[1][3]
+  [
+    [1, 2, 3]
+  ]
+>
+```
+
+## Using Nx Operations
+
+```elixir
+a = Nx.tensor([1, 2, 3])
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+#Nx.Tensor<
+  s64[3]
+  [1, 2, 3]
+>
+```
+
+```elixir
+a |> Nx.as_type({:f, 32}) |> Nx.reshape({1, 3, 1})
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+#Nx.Tensor<
+  f32[1][3][1]
+  [
+    [
+      [1.0],
+      [2.0],
+      [3.0]
+    ]
+  ]
+>
+```
+
+```elixir
+Nx.bitcast(a, {:f, 64})
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+#Nx.Tensor<
+  f64[3]
+  [5.0e-324, 1.0e-323, 1.5e-323]
+>
+```
+
+```elixir
+a = [-3, -2, -1, 0, 1, 2, 3]
+Enum.map(a, &abs/1)
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+[3, 2, 1, 0, 1, 2, 3]
+```
+
+```elixir
+a = Nx.tensor([[[-1, -2, -3], [-4, -5, -6]], [[1, 2, 3], [4, 5, 6]]])
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+#Nx.Tensor<
+  s64[2][2][3]
+  [
+    [
+      [-1, -2, -3],
+      [-4, -5, -6]
+    ],
+    [
+      [1, 2, 3],
+      [4, 5, 6]
+    ]
+  ]
+>
+```
+
+```elixir
+Nx.abs(a)
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+#Nx.Tensor<
+  s64[2][2][3]
+  [
+    [
+      [1, 2, 3],
+      [4, 5, 6]
+    ],
+    [
+      [1, 2, 3],
+      [4, 5, 6]
+    ]
+  ]
+>
+```
+
+```elixir
+a = [1, 2, 3]
+b = [4, 5, 6]
+Enum.zip_with(a, b, fn x, y -> x + y end)
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+[5, 7, 9]
+```
+
+```elixir
+a = Nx.tensor([[1, 2, 3], [4, 5, 6]])
+b = Nx.tensor([[6, 7, 8], [9, 10, 11]])
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+#Nx.Tensor<
+  s64[2][3]
+  [
+    [6, 7, 8],
+    [9, 10, 11]
+  ]
+>
+```
+
+```elixir
+Nx.add(a, b)
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+#Nx.Tensor<
+  s64[2][3]
+  [
+    [7, 9, 11],
+    [13, 15, 17]
+  ]
+>
+```
+
+```elixir
+Nx.multiply(a, b)
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+#Nx.Tensor<
+  s64[2][3]
+  [
+    [6, 14, 24],
+    [36, 50, 66]
+  ]
+>
+```
+
+```elixir
+Nx.add(5, Nx.tensor([1, 2, 3]))
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+#Nx.Tensor<
+  s64[3]
+  [6, 7, 8]
+>
+```
+
+```elixir
+Nx.add(
+  Nx.tensor([1, 2, 3]),
+  Nx.tensor([[4, 5, 6], [7, 8, 9]])
+)
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+#Nx.Tensor<
+  s64[2][3]
+  [
+    [5, 7, 9],
+    [8, 10, 12]
+  ]
+>
+```
+
+## Reductions
+
+```elixir
+revs = Nx.tensor([85, 76, 42, 34, 46, 23, 52, 99, 22, 32, 85, 51])
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+#Nx.Tensor<
+  s64[12]
+  [85, 76, 42, 34, 46, 23, 52, 99, 22, 32, 85, 51]
+>
+```
+
+```elixir
+Nx.sum(revs)
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+#Nx.Tensor<
+  s64
+  647
+>
+```
+
+```elixir
+revs =
+  Nx.tensor(
+    [
+      [21, 64, 86, 26, 74, 81, 38, 79, 70, 48, 85, 33],
+      [64, 82, 48, 39, 70, 71, 81, 53, 50, 67, 36, 50],
+      [68, 74, 39, 78, 95, 62, 53, 21, 43, 59, 51, 88],
+      [47, 74, 97, 51, 98, 47, 61, 36, 83, 55, 74, 43]
+    ],
+    names: [:year, :month]
+  )
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+#Nx.Tensor<
+  s64[year: 4][month: 12]
+  [
+    [21, 64, 86, 26, 74, 81, 38, 79, 70, 48, 85, 33],
+    [64, 82, 48, 39, 70, 71, 81, 53, 50, 67, 36, 50],
+    [68, 74, 39, 78, 95, 62, 53, 21, 43, 59, 51, 88],
+    [47, 74, 97, 51, 98, 47, 61, 36, 83, 55, 74, 43]
+  ]
+>
+```
+
+```elixir
+Nx.sum(revs, axes: [:year])
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+#Nx.Tensor<
+  s64[month: 12]
+  [200, 294, 270, 194, 337, 261, 233, 189, 246, 229, 246, 214]
+>
+```
+
+```elixir
+Nx.sum(revs, axes: [:month])
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+#Nx.Tensor<
+  s64[year: 4]
+  [705, 711, 731, 766]
+>
+```
+
+## Going from def to defn
+
+```elixir
+defmodule MyModule do
+  def adds_one(x) do
+    Nx.add(x, 1)
+  end
+end
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+{:module, MyModule, <<70, 79, 82, 49, 0, 0, 6, ...>>, {:adds_one, 1}}
+```
+
+```elixir
+MyModule.adds_one(1)
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+#Nx.Tensor<
+  s64
+  2
+>
+```
+
+```elixir
+defmodule MyModuleN do
+  import Nx.Defn
+
+  defn adds_one(x) do
+    Nx.add(x, 1) |> print_expr()
+  end
+end
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+{:module, MyModuleN, <<70, 79, 82, 49, 0, 0, 9, ...>>, true}
+```
+
+```elixir
+MyModuleN.adds_one(Nx.tensor([1, 2, 3]))
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+#Nx.Tensor<
+  s64[3]
+  
+  Nx.Defn.Expr
+  parameter a:0   s64[3]
+  b = add 1, a    s64[3]
+>
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+#Nx.Tensor<
+  s64[3]
+  [2, 3, 4]
+>
+```
+
+```elixir
+defmodule Softmax do
+  import Nx.Defn
+
+  defn(softmax(n), do: Nx.exp(n) / Nx.sum(Nx.exp(n)))
+end
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+{:module, Softmax, <<70, 79, 82, 49, 0, 0, 9, ...>>, true}
+```
+
+```elixir
+key = Nx.Random.key(42)
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+#Nx.Tensor<
+  u32[2]
+  [0, 42]
+>
+```
+
+```elixir
+{tensor, _key} = Nx.Random.uniform(key, shape: 1_000_000)
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+{#Nx.Tensor<
+   f32
+   0.9145736694335938
+ >,
+ #Nx.Tensor<
+   u32[2]
+   [2465931498, 3679230171]
+ >}
+```
+
+```elixir
+Benchee.run(
+  %{
+    "JIT with EXLA" => fn -> apply(EXLA.jit(&Softmax.softmax/1), [tensor]) end,
+    "Regular Elixir" => fn -> Softmax.softmax(tensor) end
+  },
+  time: 10
+)
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+Error trying to determine erlang version enoent, falling back to overall OTP version
+Warning: the benchmark JIT with EXLA is using an evaluated function.
+  Evaluated functions perform slower than compiled functions.
+  You can move the Benchee caller to a function in a module and invoke `Mod.fun()` instead.
+  Alternatively, you can move the benchmark into a benchmark.exs file and run mix run benchmark.exs
+
+Warning: the benchmark Regular Elixir is using an evaluated function.
+  Evaluated functions perform slower than compiled functions.
+  You can move the Benchee caller to a function in a module and invoke `Mod.fun()` instead.
+  Alternatively, you can move the benchmark into a benchmark.exs file and run mix run benchmark.exs
+
+Operating System: macOS
+CPU Information: Apple M1
+Number of Available Cores: 8
+Available memory: 8 GB
+Elixir 1.15.2
+Erlang 26
+
+Benchmark suite executing with the following configuration:
+warmup: 2 s
+time: 10 s
+memory time: 0 ns
+reduction time: 0 ns
+parallel: 1
+inputs: none specified
+Estimated total run time: 24 s
+
+Benchmarking JIT with EXLA ...
+
+17:10:47.508 [info] TfrtCpuClient created.
+Benchmarking Regular Elixir ...
+
+Name                     ips        average  deviation         median         99th %
+Regular Elixir      211.55 K        4.73 μs   ±274.44%        4.25 μs        6.96 μs
+JIT with EXLA        54.48 K       18.36 μs    ±55.96%       16.38 μs       52.09 μs
+
+Comparison: 
+Regular Elixir      211.55 K
+JIT with EXLA        54.48 K - 3.88x slower +13.63 μs
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+%Benchee.Suite{
+  system: %{
+    erlang: "26",
+    os: :macOS,
+    elixir: "1.15.2",
+    available_memory: "8 GB",
+    cpu_speed: "Apple M1",
+    num_cores: 8
+  },
+  configuration: %Benchee.Configuration{
+    parallel: 1,
+    time: 10000000000.0,
+    warmup: 2000000000.0,
+    memory_time: 0.0,
+    reduction_time: 0.0,
+    pre_check: false,
+    formatters: [Benchee.Formatters.Console],
+    percentiles: ~c"2c",
+    print: %{configuration: true, benchmarking: true, fast_warning: true},
+    inputs: nil,
+    save: false,
+    load: false,
+    unit_scaling: :best,
+    assigns: %{},
+    before_each: nil,
+    after_each: nil,
+    before_scenario: nil,
+    after_scenario: nil,
+    measure_function_call_overhead: false,
+    title: nil,
+    profile_after: false
+  },
+  scenarios: [
+    %Benchee.Scenario{
+      name: "Regular Elixir",
+      job_name: "Regular Elixir",
+      function: #Function<43.125776118/0 in :erl_eval.expr/6>,
+      input_name: :__no_input,
+      input: :__no_input,
+      before_each: nil,
+      after_each: nil,
+      before_scenario: nil,
+      after_scenario: nil,
+      tag: nil,
+      run_time_data: %Benchee.CollectionData{
+        statistics: %Benchee.Statistics{
+          average: 4726.917627697268,
+          ips: 211554.35291288397,
+          std_dev: 12972.386881475233,
+          std_dev_ratio: 2.744364912446078,
+          std_dev_ips: 580582.3432093535,
+          median: 4250.0,
+          percentiles: %{50 => 4250.0, 99 => 6959.0},
+          mode: 4125,
+          minimum: 3875,
+          maximum: 9947542,
+          relative_more: nil,
+          relative_less: nil,
+          absolute_difference: nil,
+          sample_size: 2042252
+        },
+        samples: [39875, 6583, 5917, 5834, 15125, 5667, 5333, 5417, 5542, 5292, 5292, 5333, 5542,
+         5584, 5125, 5042, 5000, 5042, 5375, 5000, 5042, 4958, 6625, 5958, 5209, 5208, 5250, 5958,
+         5417, 5417, 5375, 5000, 5334, ...]
+      },
+      memory_usage_data: %Benchee.CollectionData{
+        statistics: %Benchee.Statistics{
+          average: nil,
+          ips: nil,
+          std_dev: nil,
+          std_dev_ratio: nil,
+          std_dev_ips: nil,
+          median: nil,
+          percentiles: nil,
+          mode: nil,
+          minimum: nil,
+          maximum: nil,
+          relative_more: nil,
+          relative_less: nil,
+          absolute_difference: nil,
+          sample_size: 0
+        },
+        samples: []
+      },
+      reductions_data: %Benchee.CollectionData{
+        statistics: %Benchee.Statistics{
+          average: nil,
+          ips: nil,
+          std_dev: nil,
+          std_dev_ratio: nil,
+          std_dev_ips: nil,
+          median: nil,
+          percentiles: nil,
+          mode: nil,
+          minimum: nil,
+          maximum: nil,
+          relative_more: nil,
+          relative_less: nil,
+          absolute_difference: nil,
+          sample_size: 0
+        },
+        samples: []
+      }
+    },
+    %Benchee.Scenario{
+      name: "JIT with EXLA",
+      job_name: "JIT with EXLA",
+      function: #Function<43.125776118/0 in :erl_eval.expr/6>,
+      input_name: :__no_input,
+      input: :__no_input,
+      before_each: nil,
+      after_each: nil,
+      before_scenario: nil,
+      after_scenario: nil,
+      tag: nil,
+      run_time_data: %Benchee.CollectionData{
+        statistics: %Benchee.Statistics{
+          average: 18356.77760312728,
+          ips: 54475.792081810636,
+          std_dev: 10272.682530187945,
+          std_dev_ratio: 0.559612517636967,
+          std_dev_ips: 30485.33515717,
+          median: 16375.0,
+          percentiles: %{50 => 16375.0, 99 => 52094.66000000038},
+          mode: 15625,
+          minimum: 13334,
+          maximum: 2792708,
+          relative_more: 3.883456207395313,
+          relative_less: 0.25750258187428193,
+          absolute_difference: 13629.859975430012,
+          sample_size: 535673
+        },
+        samples: [75250, 22208, 20208, 31041, 19583, 32125, 20875, 31625, 38875, 18458, 24250,
+         36250, 20541, 31458, 26458, 21667, 22334, 39958, 18458, 23750, 23084, 35709, 24167, 25167,
+         20541, 23500, 21584, 24083, 54625, 21833, 25958, 23875, ...]
+      },
+      memory_usage_data: %Benchee.CollectionData{
+        statistics: %Benchee.Statistics{
+          average: nil,
+          ips: nil,
+          std_dev: nil,
+          std_dev_ratio: nil,
+          std_dev_ips: nil,
+          median: nil,
+          percentiles: nil,
+          mode: nil,
+          minimum: nil,
+          maximum: nil,
+          relative_more: nil,
+          relative_less: nil,
+          absolute_difference: nil,
+          sample_size: 0
+        },
+        samples: []
+      },
+      reductions_data: %Benchee.CollectionData{
+        statistics: %Benchee.Statistics{
+          average: nil,
+          ips: nil,
+          std_dev: nil,
+          std_dev_ratio: nil,
+          std_dev_ips: nil,
+          median: nil,
+          percentiles: nil,
+          mode: nil,
+          minimum: nil,
+          maximum: nil,
+          relative_more: nil,
+          relative_less: nil,
+          absolute_difference: nil,
+          sample_size: 0
+        },
+        samples: []
+      }
+    }
+  ]
+}
+```
+
+```elixir
+Nx.Defn.global_default_options(compiler: EXLA)
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+[]
+```
+
+```elixir
+Benchee.run(
+  %{
+    "JIT with EXLA" => fn -> apply(EXLA.jit(&Softmax.softmax/1), [tensor]) end,
+    "Regular Elixir" => fn -> Softmax.softmax(tensor) end
+  },
+  time: 10
+)
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+Error trying to determine erlang version enoent, falling back to overall OTP version
+Warning: the benchmark JIT with EXLA is using an evaluated function.
+  Evaluated functions perform slower than compiled functions.
+  You can move the Benchee caller to a function in a module and invoke `Mod.fun()` instead.
+  Alternatively, you can move the benchmark into a benchmark.exs file and run mix run benchmark.exs
+
+Warning: the benchmark Regular Elixir is using an evaluated function.
+  Evaluated functions perform slower than compiled functions.
+  You can move the Benchee caller to a function in a module and invoke `Mod.fun()` instead.
+  Alternatively, you can move the benchmark into a benchmark.exs file and run mix run benchmark.exs
+
+Operating System: macOS
+CPU Information: Apple M1
+Number of Available Cores: 8
+Available memory: 8 GB
+Elixir 1.15.2
+Erlang 26
+
+Benchmark suite executing with the following configuration:
+warmup: 2 s
+time: 10 s
+memory time: 0 ns
+reduction time: 0 ns
+parallel: 1
+inputs: none specified
+Estimated total run time: 24 s
+
+Benchmarking JIT with EXLA ...
+Benchmarking Regular Elixir ...
+
+Name                     ips        average  deviation         median         99th %
+Regular Elixir       59.96 K       16.68 μs   ±195.57%       14.88 μs       35.54 μs
+JIT with EXLA        57.03 K       17.53 μs    ±52.76%       15.79 μs       43.38 μs
+
+Comparison: 
+Regular Elixir       59.96 K
+JIT with EXLA        57.03 K - 1.05x slower +0.86 μs
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+%Benchee.Suite{
+  system: %{
+    erlang: "26",
+    os: :macOS,
+    elixir: "1.15.2",
+    available_memory: "8 GB",
+    cpu_speed: "Apple M1",
+    num_cores: 8
+  },
+  configuration: %Benchee.Configuration{
+    parallel: 1,
+    time: 10000000000.0,
+    warmup: 2000000000.0,
+    memory_time: 0.0,
+    reduction_time: 0.0,
+    pre_check: false,
+    formatters: [Benchee.Formatters.Console],
+    percentiles: ~c"2c",
+    print: %{configuration: true, benchmarking: true, fast_warning: true},
+    inputs: nil,
+    save: false,
+    load: false,
+    unit_scaling: :best,
+    assigns: %{},
+    before_each: nil,
+    after_each: nil,
+    before_scenario: nil,
+    after_scenario: nil,
+    measure_function_call_overhead: false,
+    title: nil,
+    profile_after: false
+  },
+  scenarios: [
+    %Benchee.Scenario{
+      name: "Regular Elixir",
+      job_name: "Regular Elixir",
+      function: #Function<43.125776118/0 in :erl_eval.expr/6>,
+      input_name: :__no_input,
+      input: :__no_input,
+      before_each: nil,
+      after_each: nil,
+      before_scenario: nil,
+      after_scenario: nil,
+      tag: nil,
+      run_time_data: %Benchee.CollectionData{
+        statistics: %Benchee.Statistics{
+          average: 16676.42238203377,
+          ips: 59964.89997023242,
+          std_dev: 32613.93053259857,
+          std_dev_ratio: 1.9556910820233822,
+          std_dev_ips: 117272.82010620773,
+          median: 14875.0,
+          percentiles: %{50 => 14875.0, 99 => 35541.5},
+          mode: 14375,
+          minimum: 13583,
+          maximum: 13548083,
+          relative_more: nil,
+          relative_less: nil,
+          absolute_difference: nil,
+          sample_size: 588749
+        },
+        samples: [37791, 33333, 18958, 43541, 15208, 32833, 15708, 32417, 18708, 25292, 23708,
+         25708, 19750, 33083, 15375, 30375, 20500, 30666, 17625, 27209, 25083, 31000, 14833, 29708,
+         14792, 30917, 15833, 29500, 17125, 32709, 18083, 25958, 25000, ...]
+      },
+      memory_usage_data: %Benchee.CollectionData{
+        statistics: %Benchee.Statistics{
+          average: nil,
+          ips: nil,
+          std_dev: nil,
+          std_dev_ratio: nil,
+          std_dev_ips: nil,
+          median: nil,
+          percentiles: nil,
+          mode: nil,
+          minimum: nil,
+          maximum: nil,
+          relative_more: nil,
+          relative_less: nil,
+          absolute_difference: nil,
+          sample_size: 0
+        },
+        samples: []
+      },
+      reductions_data: %Benchee.CollectionData{
+        statistics: %Benchee.Statistics{
+          average: nil,
+          ips: nil,
+          std_dev: nil,
+          std_dev_ratio: nil,
+          std_dev_ips: nil,
+          median: nil,
+          percentiles: nil,
+          mode: nil,
+          minimum: nil,
+          maximum: nil,
+          relative_more: nil,
+          relative_less: nil,
+          absolute_difference: nil,
+          sample_size: 0
+        },
+        samples: []
+      }
+    },
+    %Benchee.Scenario{
+      name: "JIT with EXLA",
+      job_name: "JIT with EXLA",
+      function: #Function<43.125776118/0 in :erl_eval.expr/6>,
+      input_name: :__no_input,
+      input: :__no_input,
+      before_each: nil,
+      after_each: nil,
+      before_scenario: nil,
+      after_scenario: nil,
+      tag: nil,
+      run_time_data: %Benchee.CollectionData{
+        statistics: %Benchee.Statistics{
+          average: 17533.14999393481,
+          ips: 57034.81692370892,
+          std_dev: 9251.095068588862,
+          std_dev_ratio: 0.5276345135807922,
+          std_dev_ips: 30093.537884710688,
+          median: 15791.0,
+          percentiles: %{50 => 15791.0, 99 => 43375.0},
+          mode: 15250,
+          minimum: 14375,
+          maximum: 2521875,
+          relative_more: 1.051373585549382,
+          relative_less: 0.9511366975017377,
+          absolute_difference: 856.7276119010421,
+          sample_size: 560576
+        },
+        samples: [51583, 19375, 15958, 31417, 19125, 33834, 17208, 16208, 29250, 18834, 24958,
+         26292, 16333, 22541, 23333, 25541, 20666, 17458, 29291, 17334, 26875, 17459, 18334, 24166,
+         23542, 26625, 17417, 17917, 28000, 17458, 20458, 21583, ...]
+      },
+      memory_usage_data: %Benchee.CollectionData{
+        statistics: %Benchee.Statistics{
+          average: nil,
+          ips: nil,
+          std_dev: nil,
+          std_dev_ratio: nil,
+          std_dev_ips: nil,
+          median: nil,
+          percentiles: nil,
+          mode: nil,
+          minimum: nil,
+          maximum: nil,
+          relative_more: nil,
+          relative_less: nil,
+          absolute_difference: nil,
+          sample_size: 0
+        },
+        samples: []
+      },
+      reductions_data: %Benchee.CollectionData{
+        statistics: %Benchee.Statistics{
+          average: nil,
+          ips: nil,
+          std_dev: nil,
+          std_dev_ratio: nil,
+          std_dev_ips: nil,
+          median: nil,
+          percentiles: nil,
+          mode: nil,
+          minimum: nil,
+          maximum: nil,
+          relative_more: nil,
+          relative_less: nil,
+          absolute_difference: nil,
+          sample_size: 0
+        },
+        samples: []
+      }
+    }
+  ]
+}
 ```

@@ -1,0 +1,236 @@
+# Harness the power of math
+
+```elixir
+Mix.install([
+  {:nx, "~> 0.6.2"},
+  {:exla, "~> 0.6.1"},
+  {:kino, "~> 0.10.0"},
+  {:stb_image, "~> 0.6.3"},
+  {:vega_lite, "~> 0.1.8"},
+  {:kino_vega_lite, "~> 0.1.10"}
+])
+```
+
+## Section
+
+```elixir
+Nx.default_backend(EXLA.Backend)
+```
+
+```elixir
+a = Nx.tensor([1, 2, 3])
+b = Nx.tensor([4.0, 5.0, 6.0])
+c = Nx.tensor([1, 0, 1], type: {:u, 8})
+IO.inspect(a, label: :a)
+IO.inspect(b, label: :b)
+IO.inspect(c, label: :c)
+```
+
+```elixir
+goog_current_price = 2677.32
+goog_pe = 23.86
+goog_mkt_cap = 1760
+goog = Nx.tensor([goog_current_price, goog_pe, goog_mkt_cap])
+```
+
+```elixir
+i_am_a_scalar = Nx.tensor(5)
+```
+
+```elixir
+i_am_also_a_scalar = 5
+```
+
+```elixir
+meta_current_price = 133.93
+meta_pe = 11.10
+meta_mkt_cap = 360
+```
+
+```elixir
+stock_matrix =
+  Nx.tensor([
+    [goog_current_price, goog_pe, goog_mkt_cap],
+    [meta_current_price, meta_pe, meta_mkt_cap]
+  ])
+
+IO.inspect(stock_matrix, label: :stock_matrix)
+```
+
+```elixir
+sales_day_1 = Nx.tensor([32, 10, 14])
+sales_day_2 = Nx.tensor([10, 24, 21])
+total_sales = Nx.add(sales_day_1, sales_day_2)
+keep_rate = 0.9
+unreturned_sales = Nx.multiply(keep_rate, total_sales)
+```
+
+```elixir
+price_per_product = Nx.tensor([9.95, 10.95, 5.99])
+revenue_per_product = Nx.multiply(unreturned_sales, price_per_product)
+```
+
+```elixir
+
+```
+
+```elixir
+sales_matrix = Nx.tensor([[32, 10, 14], [10, 24, 21]])
+Nx.transpose(sales_matrix)
+```
+
+```elixir
+invert_color_channels =
+  Nx.tensor([
+    [-1, 0, 0],
+    [0, -1, 0],
+    [0, 0, -1]
+  ])
+
+"workspace/livebook/images/cat.jpeg"
+|> StbImage.read_file!()
+|> StbImage.resize(256, 256)
+|> StbImage.to_nx()
+|> Nx.dot(invert_color_channels)
+|> Nx.as_type({:u, 8})
+|> Kino.Image.new()
+```
+
+```elixir
+vector = Nx.dot(Nx.tensor([1, 2, 3]), Nx.tensor([1, 2, 3]))
+```
+
+```elixir
+vector_matrix = Nx.dot(Nx.tensor([1, 2]), Nx.tensor([[1], [2]]))
+```
+
+```elixir
+matrix_matrix = Nx.dot(Nx.tensor([[1, 2]]), Nx.tensor([[3], [4]]))
+```
+
+## Think probabilistically
+
+```elixir
+simulation = fn key ->
+  {value, key} = Nx.Random.uniform(key)
+  if Nx.to_number(value) < 0.5, do: {0, key}, else: {1, key}
+end
+```
+
+```elixir
+key = Nx.Random.key(42)
+IO.inspect(key, label: :key)
+```
+
+```elixir
+for n <- [10, 100, 1000, 10000] do
+  Enum.map_reduce(1..n, key, fn _, key -> simulation.(key) end)
+  |> elem(0)
+  |> Enum.sum()
+  |> IO.inspect()
+end
+```
+
+### Tracking change
+
+```elixir
+defmodule BerryFarm do
+  import Nx.Defn
+
+  defn profits(trees) do
+    trees
+    |> Nx.subtract(1)
+    |> Nx.pow(4)
+    |> Nx.negate()
+    |> Nx.add(Nx.pow(trees, 3))
+    |> Nx.add(Nx.pow(trees, 2))
+  end
+end
+```
+
+```elixir
+trees = Nx.linspace(0, 4, n: 1000)
+```
+
+```elixir
+profits = BerryFarm.profits(trees)
+```
+
+```elixir
+alias VegaLite, as: VL
+```
+
+```elixir
+VL.new(title: "Berry Farm Profits", width: 1440, height: 1080)
+|> VL.data_from_values(%{
+  trees: Nx.to_flat_list(trees),
+  profits: Nx.to_flat_list(profits)
+})
+|> VL.mark(:line, interpolate: :basis)
+|> VL.encode_field(:x, "trees", type: :quantitative)
+|> VL.encode_field(:y, "profits", type: :quantitative)
+```
+
+```elixir
+defmodule BerryFarmV2 do
+  import Nx.Defn
+
+  defn profits(trees) do
+    -((trees - 1) ** 4) + trees ** 3 + trees ** 2
+  end
+
+  defn profits_derivative(trees) do
+    grad(trees, &profits/1)
+  end
+end
+```
+
+```elixir
+trees = Nx.linspace(0, 4, n: 1000)
+profits = BerryFarmV2.profits(trees)
+profits_derivative = BerryFarmV2.profits_derivative(trees)
+```
+
+```elixir
+VL.new(title: "Berry Farm Profits and Profits rate of change", width: 1440, height: 1080)
+|> VL.data_from_values(%{
+  trees: Nx.to_flat_list(trees),
+  profits: Nx.to_flat_list(profits),
+  profits_derivative: Nx.to_flat_list(profits_derivative)
+})
+|> VL.layers([
+  VL.new()
+  |> VL.mark(:line, interpolate: :basis)
+  |> VL.encode_field(:x, "trees", type: :quantitative)
+  |> VL.encode_field(:y, "profits", type: :quantitative),
+  VL.new()
+  |> VL.mark(:line, interpolate: :basis)
+  |> VL.encode_field(:x, "trees", type: :quantitative)
+  |> VL.encode_field(:y, "profits_derivative", type: :quantitative)
+  |> VL.encode(:color, value: "#ff0000")
+])
+```
+
+### Automatic differentiation with defn
+
+```elixir
+defmodule GradFun do
+  import Nx.Defn
+
+  defn my_function(x) do
+    x
+    |> Nx.cos()
+    |> Nx.exp()
+    |> Nx.sum()
+    |> print_expr()
+  end
+
+  defn grad_my_function(x) do
+    grad(x, &my_function/1) |> print_expr()
+  end
+end
+```
+
+```elixir
+GradFun.grad_my_function(Nx.tensor([1.0, 2.0, 3.0]))
+```
