@@ -1,0 +1,83 @@
+# Learn to see
+
+```elixir
+Mix.install([
+  {:axon, "~> 0.6.0"},
+  {:nx, "~> 0.6.2"},
+  {:exla, "~> 0.6.1"},
+  {:stb_image, "~> 0.6.3"},
+  {:kino, "~> 0.11.0"}
+])
+```
+
+## Identifying cats and dogs
+
+```elixir
+Nx.global_default_backend(EXLA.Backend)
+```
+
+```elixir
+defmodule CatsAndDogs do
+  def pipeline(paths, batch_size, target_height, target_width) do
+    paths
+    |> Enum.shuffle()
+    |> Task.async_stream(&parse_image/1)
+    |> Stream.filter(fn
+      {:ok, {%StbImage{}, _}} -> true
+      _ -> false
+    end)
+    |> Stream.map(&to_tensors(&1, target_height, target_width))
+    |> Stream.chunk_every(batch_size, batch_size, :discard)
+    |> Stream.map(fn chuncks ->
+      {img_chunck, label_chunck} = Enum.unzip(chuncks)
+      {Nx.stack(img_chunck), Nx.stack(label_chunck)}
+    end)
+  end
+
+  defp to_tensors({:ok, {img, label}}, target_height, target_width) do
+    img_tensor =
+      img
+      |> StbImage.resize(target_height, target_width)
+      |> StbImage.to_nx()
+      |> Nx.divide(255)
+
+    label_tensor = Nx.tensor([label])
+
+    {img_tensor, label_tensor}
+  end
+
+  defp parse_image(path) do
+    label = if String.contains?(path, "cat"), do: 0, else: 1
+
+    if label == 0 do
+      IO.inspect("Cat.....")
+    end
+
+    case StbImage.read_file(path) do
+      {:ok, img} ->
+        {img, label}
+
+      error ->
+        {:error, error}
+    end
+  end
+end
+```
+
+```elixir
+train_path = Path.wildcard("../livebook/train/**/**/*.jpg")
+```
+
+```elixir
+batch_size = 128
+target_height = 96
+target_width = 96
+```
+
+```elixir
+train_pipeline = CatsAndDogs.pipeline(train_path, batch_size, target_height, target_width)
+```
+
+```elixir
+Enum.take(train_pipeline, 1)
+```
